@@ -1,0 +1,50 @@
+﻿@model List<Kart>
+@{
+    ViewBag.Title = "Ana Sayfa";
+}
+
+<div class="jumbotron">
+    <h1 class="text-center font-weight-bold" style="color:chocolate">YILBAŞI KARTLARI</h1>
+</div>
+
+<div>
+    @Html.ActionLink("Yeni Kart Oluştur", "Yeni", null, new { @class = "btn btn-success" })
+</div>
+<hr />
+<div class="row mx-1">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 card mb-2">
+            <a href="@Url.Action("Goruntule","Home",new { id = item.Id })"><img class="card-img-top" src="~/Content/images/@item.ResimAd" alt="Card image cap"></a>
+            <div class="card-body">
+                <h5 class="card-text text-center">@item.Baslik @item.AliciAd</h5>
+                <p class="card-text text-center">@item.Mesaj</p>
+                <p class="card-text text-right">-@item.GonderenAd</p>
+            </div>
+            <div class="mx-auto mb-3 ">
+                @Html.ActionLink("Düzenle", "Duzenle", new { id = item.Id }, new { @class = "btn btn-warning mx-auto" })
+                @using (Html.BeginForm("Sil", "Home", FormMethod.Post, new { @class = "d-inline" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("Id", item.Id);
+                    <button class="btn btn-danger mx-auto" id="btnSil">Sil</button>
+                }
+                @Html.ActionLink("İndir", "Goruntule", "Home", new { id = item.Id }, new { @class = "btn btn-info mx-auto" })
+            </div>
+        </div>
+    }
+
+</div>
+
+@section scripts{
+    <script>
+
+
+        $("#btnSil").click(function () {
+            
+            if (!confirm("Kart silinsin mi?")) {
+                return false;
+            };
+        });
+    </script>
+}

@@ -1,0 +1,108 @@
+﻿@model KartResim
+@{
+    ViewBag.Title = "Yeni Kart";
+}
+<div class="text-center mb-5">
+    <h3 class="font-weight-bold" style="color:forestgreen">YENİ KART</h3>
+</div>
+
+
+
+
+<div class="row justify-content-center">
+    <div class="card col-md-4">
+
+
+        @*<img class="card-img-top" src="~/Content/images/ball.png" alt="Card image cap">*@
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
+
+            <div class="carousel-inner">
+                @{ int i = 0;
+                    foreach (var fullPath in Model.Resim)
+                    {
+                        var fileName = Path.GetFileName(fullPath);
+                        var resim = "~/Content/images/" + fileName;
+                        @*<img src="@Url.Content(@resim)" alt="Alternate Text" />*@
+
+                        if (i == 0)
+                        {
+                            <div class="carousel-item active">
+                                <img class="w-100" src="@Url.Content(@resim)" alt="Slide" id=@fileName>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="carousel-item">
+                                <img class="w-100" src="@Url.Content(@resim)" alt="Slide" id=@fileName>
+                            </div>
+                        }
+                        i++;
+                    }
+                }
+
+
+            </div>
+            <a class="carousel-control-prev " href="#carouselExampleIndicators" role="button" data-slide="prev" style="filter: invert(100%)">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next" style="filter: invert(100%)">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+
+
+        @using (Html.BeginForm("Yeni", "Home", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Hidden("Kart.ResimAd", "")
+            <div class="card-body">
+
+                <div class="form-group ">
+                    @Html.TextBoxFor(x => x.Kart.Baslik, new { @class = "form-control mx-auto", @placeholder = "Başlık" })
+                    @Html.ValidationMessageFor(x => x.Kart.Baslik, "", new { @class = "form-text text-danger text-center" })
+
+                </div>
+
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.Kart.GonderenAd, new { @class = "form-control mx-auto", @placeholder = "Gönderen Ad" })
+                    @Html.ValidationMessageFor(x => x.Kart.GonderenAd, "", new { @class = "form-text text-danger text-center" })
+
+                </div>
+
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.Kart.AliciAd, new { @class = "form-control mx-auto", @placeholder = "Alıcı Ad" })
+                    @Html.ValidationMessageFor(x => x.Kart.AliciAd, "", new { @class = "form-text text-danger text-center" })
+
+                </div>
+
+                <div class="form-group">
+                    @Html.TextAreaFor(x => x.Kart.Mesaj, new { @class = "form-control mx-auto", @placeholder = "Mesajınız" })
+                    @Html.ValidationMessageFor(x => x.Kart.Mesaj, "", new { @class = "form-text text-danger text-center" })
+                </div>
+
+
+
+            </div>
+            <div class="mb-3 text-center mx-auto">
+                <button onmouseover="javascript:myFunction()" type="submit" class="btn btn-success mx-auto"> Oluştur </button>
+                <button onclick="location.href='@Url.Action("Index", "Home")'" class="btn btn-danger mx-auto" type="button"> İptal </button>
+            </div>
+        }
+    </div>
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        function myFunction() {
+            var x = $('.active').find('img').attr("id");
+            $('#Kart_ResimAd').val(x);
+        }
+    </script>
+}
+
+
+

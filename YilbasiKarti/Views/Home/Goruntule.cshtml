@@ -1,0 +1,66 @@
+﻿@model Kart
+@{
+    ViewBag.Title = "İndir";
+}
+
+<div class="text-center mb-5">
+    <h3 class="font-weight-bold" style="color:royalblue">KART ÖNİZLEME</h3>
+</div>
+
+
+<div class="row justify-content-center">
+    <div class="card col-md-4" id="imageDIV">
+        <img class="card-img-top" src="~/Content/images/@Model.ResimAd" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-text text-center">@Model.Baslik @Model.AliciAd</h5>
+            <p class="card-text text-center">@Model.Mesaj</p>
+            <p class="card-text text-right">-@Model.GonderenAd</p>
+        </div>
+    </div>
+    <div id="copyDiv"></div>
+</div>
+<div class="row justify-content-center mx-auto my-5">
+    <div class="col-md-4 text-center">
+        <button onclick="location.href='@Url.Action("Index", "Home")'" class="btn btn-primary mx-auto" type="button">Ana Sayfa</button>
+        @*<button id="indir" onclick="location.href='@Url.Action("Indir", "Home",new {id=Model.Id})'" class="btn btn-info mx-auto" type="button"> İndir </button>*@
+        @*<button id="indir" class="btn btn-info mx-auto" type="button"> İndir </button>*@
+    </div>
+
+</div>
+
+
+
+@section scriptcanvas{
+    <script src="~/Scripts/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
+    <script>
+
+        var element = $("#imageDIV"); // global variable
+        var getCanvas; // global variable
+
+        html2canvas(element, {
+            dpi: 192,
+            onrendered: function (canvas) {
+                $("#copyDiv").append(canvas);
+                getCanvas = canvas;
+            }
+        });
+
+        
+
+        $("#imageDIV").hide();
+
+        $(document).ready(function () {
+            $("#copyDiv").mouseover(function () {
+                $("#copyDiv").css("box-shadow", "0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)");
+                $("#imageDIV").remove();
+
+            });
+            $("#copyDiv").mouseout(function () {
+                $("#copyDiv").css("box-shadow", "none");
+            });
+        });
+
+
+    </script>
+}
